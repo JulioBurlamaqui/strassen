@@ -101,21 +101,21 @@ void strassen(int **A, int **B, int **C, int grau)
 		{//Libera espaços	
  	    	for(i = 0; i < grau/2; i++)
 			{
-				free[i](A11);
-			    free[i](A12);
-			    free[i](A21);
-			    free[i](A22);
-			    free[i](B11);
-			    free[i](B12);
-			    free[i](B21);
-			    free[i](B22);
-			    free[i](M1);
-			    free[i](M2);
-			    free[i](M3);
-			    free[i](M4);
-			    free[i](M5);
-			    free[i](M6);
-			    free[i](M7);
+				free(A11[i]);
+			    free(A12[i]);
+			    free(A21[i]);
+			    free(A22[i]);
+			    free(B11[i]);
+			    free(B12[i]);
+			    free(B21[i]);
+			    free(B22[i]);
+			    free(M1[i]);
+			    free(M2[i]);
+			    free(M3[i]);
+			    free(M4[i]);
+			    free(M5[i]);
+			    free(M6[i]);
+			    free(M7[i]);
 			}	
 			
 		    free(A11);
@@ -146,6 +146,10 @@ void strassen(int **A, int **B, int **C, int grau)
             A12[i][j] = A[i+(grau/2)][j];
             A21[i][j] = A[i]         [j+(grau/2)];
             A22[i][j] = A[i+(grau/2)][j+(grau/2)];
+            B11[i][j] = B[i]         [j];
+            B12[i][j] = B[i+(grau/2)][j];
+            B21[i][j] = B[i]         [j+(grau/2)];
+            B22[i][j] = B[i+(grau/2)][j+(grau/2)];
         }            
     }    
 
@@ -156,25 +160,49 @@ void strassen(int **A, int **B, int **C, int grau)
     strassen(soma(A11, A12, grau/2), B22, M5, grau/2);
     strassen(subtrai(A21, A11, grau/2), soma(B11, B12, grau/2), M6, grau/2);
     strassen(subtrai(A12, A22, grau/2), soma(B21, B22, grau/2), M7, grau/2);	
+    
+    C11 = subtrai(soma(M1, M4, grau/2), soma(M5, M7, grau/2), grau/2);
+    C12 = soma(M3, M5, grau/2);
+    C21 = soma(M2, M4, grau/2);
+    C22 = soma(subtrai(M1, M2, grau/2), soma(M3, M6, grau/2), grau/2);
+    
+    if(grau <= 2)
+	{
+   		for(i = 0; i < grau; i++)
+		{
+			for(j = 0; j < grau; j++)
+			{
+				C[i][j] = 0;
+				for(j = 0; j < grau/2; j++)
+		        {
+		            C11[i][j] = C[i]         [j];
+		            C12[i][j] = C[i+(grau/2)][j];
+		            C21[i][j] = C[i]         [j+(grau/2)];
+		            C22[i][j] = C[i+(grau/2)][j+(grau/2)];
+		        }     
+			}
+		}
+	}
+	
 
 	{//Libera espaços
 		for(i = 0; i < grau/2; i++)
 			{
-				free[i](A11);
-			    free[i](A12);
-			    free[i](A21);
-			    free[i](A22);
-			    free[i](B11);
-			    free[i](B12);
-			    free[i](B21);
-			    free[i](B22);
-			    free[i](M1);
-			    free[i](M2);
-			    free[i](M3);
-			    free[i](M4);
-			    free[i](M5);
-			    free[i](M6);
-			    free[i](M7);
+				free(A11[i]);
+			    free(A12[i]);
+			    free(A21[i]);
+			    free(A22[i]);
+			    free(B11[i]);
+			    free(B12[i]);
+			    free(B21[i]);
+			    free(B22[i]);
+			    free(M1[i]);
+			    free(M2[i]);
+			    free(M3[i]);
+			    free(M4[i]);
+			    free(M5[i]);
+			    free(M6[i]);
+			    free(M7[i]);
 			}	
 			
 		    free(A11);
@@ -247,9 +275,16 @@ int main(int argc, char** argv)
 
 	printf("Teste4\n");
 	
-	strassen(A,B, C, n);
+	strassen(A, B, C, n);
 	
 	printf("Teste5\n");
+	
+	for(i = 0; i < n; i++)
+	{
+		free(A[i]);
+		free(B[i]);
+		free(C[i]);
+	}	
 	
 	free(A);
 	free(B);
