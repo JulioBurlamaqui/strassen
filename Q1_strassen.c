@@ -7,6 +7,8 @@ int **soma(int **A, int **B, int grau)
 	
 	int **C;
 	C = malloc(sizeof(int)*grau);
+	for(i = 0; i < grau; i++)
+		C[i] = malloc(sizeof(int)*grau);		
 	
 	for(i = 0; i < grau; i++)
 		{
@@ -17,6 +19,7 @@ int **soma(int **A, int **B, int grau)
 					C[i][j] += A[i][k] + B[k][j];
 			}
 		}
+	
 	return C;	
 }
 
@@ -25,7 +28,9 @@ int **subtrai(int **A, int **B, int grau)
 	int i, j, k;
 
 	int **C;
-	C = malloc(sizeof(int)*grau);	
+	C = malloc(sizeof(int)*grau);
+	for(i = 0; i < grau; i++)
+		C[i] = malloc(sizeof(int)*grau);	
 	
 	for(i = 0; i < grau; i++)
 		{
@@ -47,7 +52,7 @@ void strassen(int **A, int **B, int **C, int grau)
     int **C11, **C12, **C21, **C22;
     int **M1, **M2, **M3, **M4, **M5, **M6, **M7;
     
-  
+ 	printf("%d  %d\n%d  %d\n\n", A[0][0], A[0][1], A[1][0], A[1][1]);
     
     {//Aloca dinamicamente
 		A11 = malloc(sizeof(int)*grau/2);
@@ -98,6 +103,8 @@ void strassen(int **A, int **B, int **C, int grau)
 			}
 		}
 	
+		printf("FOI");
+		
 		{//Libera espaços	
  	    	for(i = 0; i < grau/2; i++)
 			{
@@ -137,7 +144,7 @@ void strassen(int **A, int **B, int **C, int grau)
 	    
         return;
     }
-
+	
 	for(i = 0; i < grau/2; i++)
     {
         for(j = 0; j < grau/2; j++)
@@ -151,7 +158,7 @@ void strassen(int **A, int **B, int **C, int grau)
             B21[i][j] = B[i]         [j+(grau/2)];
             B22[i][j] = B[i+(grau/2)][j+(grau/2)];
         }            
-    }    
+    }
 
     strassen(soma(A11, A22, grau/2), soma(B11, B22, grau/2), M1, grau/2);
     strassen(soma(A21, A22, grau/2), B11, M2, grau/2);
@@ -166,24 +173,20 @@ void strassen(int **A, int **B, int **C, int grau)
     C21 = soma(M2, M4, grau/2);
     C22 = soma(subtrai(M1, M2, grau/2), soma(M3, M6, grau/2), grau/2);
     
-    if(grau <= 2)
-	{
-   		for(i = 0; i < grau; i++)
-		{
-			for(j = 0; j < grau; j++)
-			{
-				C[i][j] = 0;
-				for(j = 0; j < grau/2; j++)
-		        {
-		            C11[i][j] = C[i]         [j];
-		            C12[i][j] = C[i+(grau/2)][j];
-		            C21[i][j] = C[i]         [j+(grau/2)];
-		            C22[i][j] = C[i+(grau/2)][j+(grau/2)];
-		        }     
-			}
+	for(i = 0; i < grau/2; i++)
+    {
+        for(j = 0; j < grau/2; j++)
+        {
+			C[i][j] = 0;
+			for(j = 0; j < grau/2; j++)
+	        {
+	            C[i]         [j]   		  = C11[i][j];
+	            C[i+(grau/2)][j] 		  = C12[i][j];
+	            C[i]         [j+(grau/2)] = C21[i][j];
+	            C[i+(grau/2)][j+(grau/2)] = C22[i][j];
+	        }     
 		}
 	}
-	
 
 	{//Libera espaços
 		for(i = 0; i < grau/2; i++)
@@ -234,8 +237,6 @@ int main(int argc, char** argv)
 	printf("Entre com o grau das matrizes.\n");
 	scanf("%d", &n);
 	
-	printf("Teste0\n");
-	
 	A = malloc(sizeof(int)*n);
 	B = malloc(sizeof(int)*n);
 	C = malloc(sizeof(int)*n);
@@ -245,13 +246,9 @@ int main(int argc, char** argv)
 		A[i] = malloc(sizeof(int)*n);
 		B[i] = malloc(sizeof(int)*n);
 		C[i] = malloc(sizeof(int)*n);		
-	}	
-	
-	printf("Teste1\n");
+	}
 	
 	srand(time(NULL));
-	
-	printf("Teste2\n");
 			
 	for(i = 0; i < n; i++)
 	{
@@ -259,10 +256,9 @@ int main(int argc, char** argv)
 		{
 			A[i][j] = 0;
 			B[i][j] = 0;
+			C[i][j] = 0;
 		}			
 	}	
-	
-	printf("Teste3\n");
 	
 	for(i = 0; i < n; i++)
 	{
@@ -271,13 +267,13 @@ int main(int argc, char** argv)
 			A[i][j] = rand()%5;
 			B[i][j] = rand()%5;
 		}			
-	}	
-
-	printf("Teste4\n");
+	}
+	
+	printf("%d  %d\n%d  %d\n\n", A[0][0], A[0][1], A[1][0], A[1][1]);
+	//printf("%d  %d\n%d  %d\n\n", B[0][0], B[0][1], B[1][0], B[1][1]);	
+//	printf("%d  %d\n%d  %d\n\n", C[0][0], C[0][1], C[1][0], C[1][1]);
 	
 	strassen(A, B, C, n);
-	
-	printf("Teste5\n");
 	
 	for(i = 0; i < n; i++)
 	{
@@ -289,8 +285,12 @@ int main(int argc, char** argv)
 	free(A);
 	free(B);
 	free(C);
+
+	printf("%d  %d\n%d  %d\n\n", A[0][0], A[0][1], A[1][0], A[1][1]);
+//	printf("%d  %d\n%d  %d\n\n", B[0][0], B[0][1], B[1][0], B[1][1]);	
+//	printf("%d  %d\n%d  %d\n\n", C[0][0], C[0][1], C[1][0], C[1][1]);
 	
-	printf("Teste6\n");
+	printf("FIM");
 	
 	return 0;
 }
