@@ -3,95 +3,142 @@
 
 int main(int argc, char** argv[])
 {
-	if(argc == 1)
-	{
-		int n = 0;
+	if(argc == 1) 
+	{//Não há -n
+		srand(time(NULL));
+		
+		int grau = 0;
 		int i, j, k;
 		
 		printf("Entre com o grau das matrizes.\n");
-		scanf("%d", &n);
+		scanf("%d", &grau);
 		
-		int A[n][n], B[n][n], C[n][n];
-		
-		srand(time(NULL));
+		int A[grau][grau], B[grau][grau], C[grau][grau];
 				
-		for(i = 0; i < n; i++)
+		for(i = 0; i < grau; i++)
 		{
-			for(j = 0; j < n; j++)
+			for(j = 0; j < grau; j++)
 			{
 				A[i][j] = 0;
 				B[i][j] = 0;
 			}			
 		}	
 		
-		for(i = 0; i < n; i++)
+		printf("Entre com os valores de A:\n");
+		for(i = 0; i < grau; i++)
 		{
-			for(j = 0; j < n; j++)
-			{
-				A[i][j] = rand()%5;
-				B[i][j] = rand()%5;
-			}			
-		}	
+			for(j = 0; j < grau; j++)
+				scanf("%d", &A[i][j]);
+		}
 		
-		for(i = 0; i < n; i++)
+		printf("Entre com os valores de B:\n");
+		for(i = 0; i < grau; i++)
 		{
-			for(j = 0; j < n; j++)
+			for(j = 0; j < grau; j++)
+				scanf("%d", &B[i][j]);
+		}		
+		
+		for(i = 0; i < grau; i++)
+		{
+			for(j = 0; j < grau; j++)
 			{
 				C[i][j] = 0;
-				for(k = 0; k < n; k++)
+				for(k = 0; k < grau; k++)
 				{
 					C[i][j] += A[i][k] * B[k][j];
 				}
 			}
 		}
 		
-		printf("%d  %d\n%d  %d\n\n", A[0][0], A[0][1], A[1][0], A[1][1]);
-		printf("%d  %d\n%d  %d\n\n", B[0][0], B[0][1], B[1][0], B[1][1]);	
-		printf("%d  %d\n%d  %d\n\n", C[0][0], C[0][1], C[1][0], C[1][1]);
+		printf("A:\n");
+		for(i = 0; i < grau; i++)
+		{
+			for(j = 0; j < grau; j++)
+				printf("%d   ", A[i][j]);
+			printf("\n");
+		}
+		
+		printf("\n\nB:\n");
+		for(i = 0; i < grau; i++)
+		{
+			for(j = 0; j < grau; j++)
+				printf("%d   ", B[i][j]);
+			printf("\n");
+		}
+		
+		printf("\n\nC:\n");
+		for(i = 0; i < grau; i++)
+		{
+			for(j = 0; j < grau; j++)
+				printf("%d   ", C[i][j]);
+			printf("\n");
+		}
 		
 		return 0;
 	}
-	else{		
-		int n = atoi(argv[2]);
+	else
+	{//Foi passado o argumento -n				
+		srand(time(NULL));
+	
+		int grau = atoi(argv[2]);
 		int i, j, k;
 		
-		int A[n][n], B[n][n], C[n][n];
-		
-		srand(time(NULL));
+		int A[grau][grau], B[grau][grau], C[grau][grau];
+
 				
-		for(i = 0; i < n; i++)
+		for(i = 0; i < grau; i++)
 		{
-			for(j = 0; j < n; j++)
+			for(j = 0; j < grau; j++)
 			{
 				A[i][j] = 0;
 				B[i][j] = 0;
 			}			
 		}	
 		
-		for(i = 0; i < n; i++)
+		for(i = 0; i < grau; i++)
 		{
-			for(j = 0; j < n; j++)
+			for(j = 0; j < grau; j++)
 			{
 				A[i][j] = rand()%5;
 				B[i][j] = rand()%5;
 			}			
 		}	
 		
-		for(i = 0; i < n; i++)
+		for(i = 0; i < grau; i++)
 		{
-			for(j = 0; j < n; j++)
+			for(j = 0; j < grau; j++)
 			{
 				C[i][j] = 0;
-				for(k = 0; k < n; k++)
+				for(k = 0; k < grau; k++)
 				{
 					C[i][j] += A[i][k] * B[k][j];
 				}
 			}
 		}
 		
-		printf("%d  %d\n%d  %d\n\n", A[0][0], A[0][1], A[1][0], A[1][1]);
-		printf("%d  %d\n%d  %d\n\n", B[0][0], B[0][1], B[1][0], B[1][1]);	
-		printf("%d  %d\n%d  %d\n\n", C[0][0], C[0][1], C[1][0], C[1][1]);
+		printf("A:\n");
+		for(i = 0; i < grau; i++)
+		{
+			for(j = 0; j < grau; j++)
+				printf("%d   ", A[i][j]);
+			printf("\n");
+		}
+		
+		printf("\n\nB:\n");
+		for(i = 0; i < grau; i++)
+		{
+			for(j = 0; j < grau; j++)
+				printf("%d   ", B[i][j]);
+			printf("\n");
+		}
+		
+		printf("\n\nC:\n");
+		for(i = 0; i < grau; i++)
+		{
+			for(j = 0; j < grau; j++)
+				printf("%d   ", A[i][j]);
+			printf("\n");
+		}
 		
 		return 0;
 	}
