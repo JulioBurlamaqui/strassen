@@ -2,8 +2,8 @@
 #include <stdlib.h>
 
 int **soma(int **A, int **B, int grau)
-{
-	int i, j, k;
+{//Soma as matrizes passadas e retorna a matriz resultado
+	int i, j;
 	
 	int **C;
 	C = malloc(sizeof(int)*grau);
@@ -11,21 +11,17 @@ int **soma(int **A, int **B, int grau)
 		C[i] = malloc(sizeof(int)*grau);		
 	
 	for(i = 0; i < grau; i++)
-		{
-			for(j = 0; j < grau; j++)
-			{
-				C[i][j] = 0;
-				for(k = 0; k < grau; k++)
-					C[i][j] += A[i][k] + B[k][j];
-			}
-		}
+	{
+		for(j = 0; j < grau; j++)
+			C[i][j] += A[i][j] + B[i][j];
+	}
 	
 	return C;	
 }
 
 int **subtrai(int **A, int **B, int grau)
-{
-	int i, j, k;
+{//Subtrai as matrizes passadas e retorna a matriz resultado
+	int i, j;
 
 	int **C;
 	C = malloc(sizeof(int)*grau);
@@ -33,24 +29,19 @@ int **subtrai(int **A, int **B, int grau)
 		C[i] = malloc(sizeof(int)*grau);	
 	
 	for(i = 0; i < grau; i++)
-		{
-			for(j = 0; j < grau; j++)
-			{
-				C[i][j] = 0;
-				for(k = 0; k < grau; k++)
-					C[i][j] += A[i][k] - B[k][j];
-			}
-		}
+	{
+		for(j = 0; j < grau; j++)
+			C[i][j] += A[i][j] - B[i][j];
+	}
 	return C;	
 }
 
 void strassen(int **A, int **B, int **C, int grau)
 {
-
     int i, j, k;
     
-	if(grau <= 2)
-	{//Se for menor ou igual a dois faça normalmente
+	if(grau <= 2) 
+	{//Se for menor ou igual a dois faÃ§a normalmente
    		for(i = 0; i < grau; i++)
 		{
 			for(j = 0; j < grau; j++)
@@ -78,6 +69,10 @@ void strassen(int **A, int **B, int **C, int grau)
 	    B21 = malloc(sizeof(int)*grau/2);
 	    B12 = malloc(sizeof(int)*grau/2);
 	    B22 = malloc(sizeof(int)*grau/2);
+	    C11 = malloc(sizeof(int)*grau/2);
+        C12 = malloc(sizeof(int)*grau/2);
+	    C21 = malloc(sizeof(int)*grau/2);
+		C22 = malloc(sizeof(int)*grau/2);
 	    M1 = malloc(sizeof(int)*grau/2);
 	    M2 = malloc(sizeof(int)*grau/2);
 	    M3 = malloc(sizeof(int)*grau/2);
@@ -96,6 +91,10 @@ void strassen(int **A, int **B, int **C, int grau)
 		    B21[i] = malloc(sizeof(int)*grau/2);
 		    B12[i] = malloc(sizeof(int)*grau/2);
 		    B22[i] = malloc(sizeof(int)*grau/2);
+		    C11[i] = malloc(sizeof(int)*grau/2);
+	        C12[i] = malloc(sizeof(int)*grau/2);
+		    C21[i] = malloc(sizeof(int)*grau/2);
+			C22[i] = malloc(sizeof(int)*grau/2);
 		    M1[i] = malloc(sizeof(int)*grau/2);
 		    M2[i] = malloc(sizeof(int)*grau/2);
 		    M3[i] = malloc(sizeof(int)*grau/2);
@@ -133,7 +132,7 @@ void strassen(int **A, int **B, int **C, int grau)
 	}
 	
 	for(i = 0; i < grau/2; i++)
-    {
+    {//Divide as matrizes A e B em 4 submatrizes cada
         for(j = 0; j < grau/2; j++)
         {
             A11[i][j] = A[i]         [j];
@@ -144,7 +143,6 @@ void strassen(int **A, int **B, int **C, int grau)
             B12[i][j] = B[i]		 [j+(grau/2)];
             B21[i][j] = B[i+(grau/2)][j];
             B22[i][j] = B[i+(grau/2)][j+(grau/2)];
-
         }         
     }  
     
@@ -161,38 +159,6 @@ void strassen(int **A, int **B, int **C, int grau)
     C21 = soma(M2, M4, grau/2);
     C22 = soma(subtrai(M1, M2, grau/2), soma(M3, M6, grau/2), grau/2);  
     
-	printf("C11:\n");
-	for(i = 0; i < grau; i++)
-	{
-		for(j = 0; j < grau; j++)
-			printf("%d   ", C11[i][j]);
-		printf("\n");
-	}
-	
-	printf("C12:\n");
-	for(i = 0; i < grau; i++)
-	{
-		for(j = 0; j < grau; j++)
-			printf("%d   ", C12[i][j]);
-		printf("\n");
-	}
-	
-	printf("C21:\n");
-	for(i = 0; i < grau; i++)
-	{
-		for(j = 0; j < grau; j++)
-			printf("%d   ", C21[i][j]);
-		printf("\n");
-	}
-	
-	printf("C22:\n");
-	for(i = 0; i < grau; i++)
-	{
-		for(j = 0; j < grau; j++)
-			printf("%d   ", C22[i][j]);
-		printf("\n");
-	}
-	
 	for(i = 0; i < grau/2; i++)
 	{
   		for(j = 0; j < grau/2; j++)
@@ -204,7 +170,7 @@ void strassen(int **A, int **B, int **C, int grau)
         }     
 	}
 
-	{//Libera espaços
+	{//Libera espaÃ§os
 		for(i = 0; i < grau/2; i++)
 			{
 				free(A11[i]);
@@ -246,29 +212,29 @@ void strassen(int **A, int **B, int **C, int grau)
 
 int main(int argc, char** argv)
 {
-	int n = 0;
+	int grau = 0;
 	int i, j;
 	int **A, **B, **C;
 	
 	printf("Entre com o grau das matrizes.\n");
-	scanf("%d", &n);
+	scanf("%d", &grau);
 	
-	A = malloc(sizeof(int)*n);
-	B = malloc(sizeof(int)*n);
-	C = malloc(sizeof(int)*n);
+	A = malloc(sizeof(int)*grau);
+	B = malloc(sizeof(int)*grau);
+	C = malloc(sizeof(int)*grau);
 	
-	for(i = 0; i < n; i++)
+	for(i = 0; i < grau; i++)
 	{
-		A[i] = malloc(sizeof(int)*n);
-		B[i] = malloc(sizeof(int)*n);
-		C[i] = malloc(sizeof(int)*n);		
+		A[i] = malloc(sizeof(int)*grau);
+		B[i] = malloc(sizeof(int)*grau);
+		C[i] = malloc(sizeof(int)*grau);		
 	}
 	
 	srand(time(NULL));
 			
-	for(i = 0; i < n; i++)
+	for(i = 0; i < grau; i++)
 	{
-		for(j = 0; j < n; j++)
+		for(j = 0; j < grau; j++)
 		{
 			A[i][j] = 0;
 			B[i][j] = 0;
@@ -276,43 +242,43 @@ int main(int argc, char** argv)
 		}			
 	}	
 	
-	for(i = 0; i < n; i++)
+	for(i = 0; i < grau; i++)
 	{
-		for(j = 0; j < n; j++)
+		for(j = 0; j < grau; j++)
 		{
 			A[i][j] = rand()%2;
 			B[i][j] = rand()%2;
 		}			
 	}
 	
-	for(i = 0; i < n; i++)
+	for(i = 0; i < grau; i++)
 	{
-		for(j = 0; j < n; j++)
+		for(j = 0; j < grau; j++)
 			printf("%d   ", A[i][j]);
 		printf("\n");
 	}
 	printf("\n\n\n");
 	
-	for(i = 0; i < n; i++)
+	for(i = 0; i < grau; i++)
 	{
-		for(j = 0; j < n; j++)
+		for(j = 0; j < grau; j++)
 			printf("%d   ",B[i][j]);
 		printf("\n");
 	}
 	printf("\n\n\n");
 	
-	strassen(A, B, C, n);
+	strassen(A, B, C, grau);
 	
-	for(i = 0; i < n; i++)
+	for(i = 0; i < grau; i++)
 	{
 		free(A[i]);
 		free(B[i]);
 		free(C[i]);
 	}	
 	
-	for(i = 0; i < n; i++)
+	for(i = 0; i < grau; i++)
 	{
-		for(j = 0; j < n; j++)
+		for(j = 0; j < grau; j++)
 			printf("%d   ", C[i][j]);
 		printf("\n");
 	}
