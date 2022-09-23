@@ -34,8 +34,26 @@ int **subtrai(int **A, int **B, int grau)
 		for(j = 0; j < grau; j++)
 			C[i][j] = A[i][j] - B[i][j];
 	}
+
 	return C;	
 }
+
+void multiplica(int **A, int **B, int **C, int grau)
+{//Multiplica pelo método normal duas matrizes e modifica a resultado. Não retorna nada.
+	int i, j, k;
+	
+	for(i = 0; i < grau; i++)
+	{
+		for(j = 0; j < grau; j++)
+		{
+			for(k = 0; k < grau; k++)
+				C[i][j] += A[i][k] * B[k][j];
+		}
+	}
+
+	return;
+}
+
 
 void strassen(int **A, int **B, int **C, int grau)
 {
@@ -43,15 +61,8 @@ void strassen(int **A, int **B, int **C, int grau)
     
 	if(grau <= 2) 
 	{//Se for menor ou igual a dois faça normalmente
-   		for(i = 0; i < grau; i++)
-		{
-			for(j = 0; j < grau; j++)
-			{
-				for(k = 0; k < grau; k++)
-					C[i][j] += A[i][k] * B[k][j];
-			}
-		}
-		
+		multiplica(A, B, C, grau);
+
         return;
     }
     
@@ -212,76 +223,163 @@ void strassen(int **A, int **B, int **C, int grau)
 
 int main(int argc, char** argv)
 {
-	int grau;
-	int i, j;
-	int **A, **B, **C;
-	
-	printf("Entre com o grau das matrizes.\n");
-	scanf("%d", &grau);
-	
-	A = malloc(sizeof(int)*grau);
-	B = malloc(sizeof(int)*grau);
-	C = malloc(sizeof(int)*grau);
-	
-	for(i = 0; i < grau; i++)
-	{
-		A[i] = malloc(sizeof(int)*grau);
-		B[i] = malloc(sizeof(int)*grau);
-		C[i] = malloc(sizeof(int)*grau);		
-	}
-	
-	srand(time(NULL));
-			
-	for(i = 0; i < grau; i++)
-	{//Inicializando C
-		for(j = 0; j < grau; j++)
-			C[i][j] = 0;
-	}	
-	
-	for(i = 0; i < grau; i++)
-	{//Inicializando A e B com valores entre {0,1}
-		for(j = 0; j < grau; j++)
+	if(argc == 1) 
+	{//Não há argumento -n
+		int **A, **B, **C;  //Cria apontadores para matrizes
+		int grau;  //Grau das matrizes quadradas
+		int i, j;  // Variáveis auxiliares
+
+		printf("Entre com o grau das matrizes.\n");
+		scanf("%d", &grau);
+
+		A = malloc(sizeof(int)*grau);
+		B = malloc(sizeof(int)*grau);
+		C = malloc(sizeof(int)*grau);
+
+		for(i = 0; i < grau; i++)
 		{
-			A[i][j] = rand()%2;
-			B[i][j] = rand()%2;
-		}			
+			A[i] = malloc(sizeof(int)*grau);
+			B[i] = malloc(sizeof(int)*grau);
+			C[i] = malloc(sizeof(int)*grau);		
+		}
+		
+		printf("Entre com os valores de A:\n");
+		for(i = 0; i < grau; i++)
+		{//Recebe valores da matriz A do teclado
+			for(j = 0; j < grau; j++)
+				scanf("%d", &A[i][j]);
+		}
+		
+		printf("Entre com os valores de B:\n");
+		for(i = 0; i < grau; i++)
+		{//Recebe valores da matriz B do teclado
+			for(j = 0; j < grau; j++)
+				scanf("%d", &B[i][j]);
+		}		
+
+		for(i = 0; i < grau; i++)
+		{//Inicializando C
+			for(j = 0; j < grau; j++)
+				C[i][j] = 0;
+		}	
+		
+		multiplica(A, B, C, grau);
+
+		printf("\n\nMétodo tradicional:\n");
+		for(i = 0; i < grau; i++)
+		{//Imprime a matriz resultado
+			for(j = 0; j < grau; j++)
+				printf("%d   ", C[i][j]);
+			printf("\n");
+		}
+
+		for(i = 0; i < grau; i++)
+		{//Resetando o valor de C para zero
+			for(j = 0; j < grau; j++)
+				C[i][j] = 0;
+		}	
+
+		strassen(A, B, C, grau);
+		
+		printf("\n\nMétodo de Strassen:\n");
+		for(i = 0; i < grau; i++)
+		{//Imprime a matriz resultado
+			for(j = 0; j < grau; j++)
+				printf("%d   ", C[i][j]);
+			printf("\n");
+		}
+
+		for(i = 0; i < grau; i++)
+		{
+			free(A[i]);
+			free(B[i]);
+			free(C[i]);
+		}	
+
+		free(A);
+		free(B);
+		free(C);
+		
+		return 0;
 	}
-	
-	for(i = 0; i < grau; i++)
-	{//Imprime A
-		for(j = 0; j < grau; j++)
-			printf("%d   ", A[i][j]);
-		printf("\n");
+	else
+	{//Foi passado o argumento -n				
+		int **A, **B, **C;  //Cria apontadores para matrizes
+		int grau = atoi(argv[2]);  //Grau já passado no terminal
+		double tempoTradicional = 0.0;
+		double tempoStrassen = 0.0;
+		int i, j;  // Variáveis auxiliares
+
+		A = malloc(sizeof(int)*grau);
+		B = malloc(sizeof(int)*grau);
+		C = malloc(sizeof(int)*grau);
+
+		for(i = 0; i < grau; i++)
+		{
+			A[i] = malloc(sizeof(int)*grau);
+			B[i] = malloc(sizeof(int)*grau);
+			C[i] = malloc(sizeof(int)*grau);		
+		}
+
+		srand(time(NULL));  //Inicializando o seed
+		
+		for(i = 0; i < grau; i++)
+		{//Gerando valores aleatórios entre {0, 4} e os alocando nas matrizes A e B
+			for(j = 0; j < grau; j++)
+			{
+				A[i][j] = rand()%5;
+				B[i][j] = rand()%5;
+			}			
+		}	
+		
+		clock_t begin = clock();
+		multiplica(A, B, C, grau);
+		clock_t end = clock();
+
+		tempoTradicional += (double)(end - begin) / CLOCKS_PER_SEC;
+
+		printf("O tempo do cálculo pelo método tradicional foi de %f segundos", tempoTradicional);
+
+		for(i = 0; i < grau; i++)
+		{//Resetando o valor de C para zero
+			for(j = 0; j < grau; j++)
+				C[i][j] = 0;
+		}	
+
+		clock_t begin = clock();
+		strassen(A, B, C, grau);
+		clock_t end = clock();
+
+		tempoStrassen += (double)(end - begin) / CLOCKS_PER_SEC;
+
+		printf("O tempo do cálculo pelo método de Strassen foi de %f segundos", tempoStrassen);
+		
+		for(i = 0; i < grau; i++)
+		{
+			free(A[i]);
+			free(B[i]);
+			free(C[i]);
+		}	
+
+		free(A);
+		free(B);
+		free(C);
+
+		return 0;
 	}
-	printf("\n\n\n");
-	
-	for(i = 0; i < grau; i++)
-	{//Imprime B
-		for(j = 0; j < grau; j++)
-			printf("%d   ",B[i][j]);
-		printf("\n");
-	}
-	printf("\n\n\n");
-	
-	strassen(A, B, C, grau);
-	
-	for(i = 0; i < grau; i++)
-	{
-		free(A[i]);
-		free(B[i]);
-		free(C[i]);
-	}	
-	
-	for(i = 0; i < grau; i++)
-	{
-		for(j = 0; j < grau; j++)
-			printf("%d   ", C[i][j]);
-		printf("\n");
-	}
-	
-	free(A);
-	free(B);
-	free(C);
-	
-	return 0;
 }
+
+
+
+double time_spent = 0.0;
+ 
+    clock_t begin = clock();
+ 
+    //faz algumas coisas aqui
+    sleep(3);
+ 
+    clock_t end = clock();
+ 
+    // calcula o tempo decorrido encontrando a diferença (end - begin) e
+    // dividindo a diferença por CLOCKS_PER_SEC para converter em segundos
+    time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
