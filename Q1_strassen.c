@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int **soma(int **A, int **B, int grau)
 {//Soma as matrizes passadas e retorna a matriz resultado
@@ -13,7 +14,7 @@ int **soma(int **A, int **B, int grau)
 	for(i = 0; i < grau; i++)
 	{
 		for(j = 0; j < grau; j++)
-			C[i][j] += A[i][j] + B[i][j];
+			C[i][j] = A[i][j] + B[i][j];
 	}
 	
 	return C;	
@@ -31,7 +32,7 @@ int **subtrai(int **A, int **B, int grau)
 	for(i = 0; i < grau; i++)
 	{
 		for(j = 0; j < grau; j++)
-			C[i][j] += A[i][j] - B[i][j];
+			C[i][j] = A[i][j] - B[i][j];
 	}
 	return C;	
 }
@@ -46,7 +47,6 @@ void strassen(int **A, int **B, int **C, int grau)
 		{
 			for(j = 0; j < grau; j++)
 			{
-				C[i][j] = 0;
 				for(k = 0; k < grau; k++)
 					C[i][j] += A[i][k] * B[k][j];
 			}
@@ -148,19 +148,19 @@ void strassen(int **A, int **B, int **C, int grau)
     
     strassen(soma(A11, A22, grau/2), soma(B11, B22, grau/2), M1, grau/2);
     strassen(soma(A21, A22, grau/2), B11, M2, grau/2);
-    strassen(A11, subtrai(A11, A22, grau/2), M3, grau/2);
-    strassen(A22, subtrai(A21, A11, grau/2), M4, grau/2);
+    strassen(A11, subtrai(B12, B22, grau/2), M3, grau/2);
+    strassen(A22, subtrai(B21, B11, grau/2), M4, grau/2);
     strassen(soma(A11, A12, grau/2), B22, M5, grau/2);
     strassen(subtrai(A21, A11, grau/2), soma(B11, B12, grau/2), M6, grau/2);
     strassen(subtrai(A12, A22, grau/2), soma(B21, B22, grau/2), M7, grau/2);	
     
-    C11 = subtrai(soma(M1, M4, grau/2), soma(M5, M7, grau/2), grau/2);
+    C11 = soma(subtrai(soma(M1, M4, grau/2), M5, grau/2), M7, grau/2);
     C12 = soma(M3, M5, grau/2);
     C21 = soma(M2, M4, grau/2);
-    C22 = soma(subtrai(M1, M2, grau/2), soma(M3, M6, grau/2), grau/2);  
-    
+    C22 = soma(soma(subtrai(M1, M2, grau/2), M3, grau/2), M6, grau/2);  
+
 	for(i = 0; i < grau/2; i++)
-	{
+	{//Reagrupa as submatrizes resultado na matriz resultado
   		for(j = 0; j < grau/2; j++)
   	    {
             C[i]         [j]   		  = C11[i][j];
@@ -212,7 +212,7 @@ void strassen(int **A, int **B, int **C, int grau)
 
 int main(int argc, char** argv)
 {
-	int grau = 0;
+	int grau;
 	int i, j;
 	int **A, **B, **C;
 	
@@ -233,17 +233,13 @@ int main(int argc, char** argv)
 	srand(time(NULL));
 			
 	for(i = 0; i < grau; i++)
-	{
+	{//Inicializando C
 		for(j = 0; j < grau; j++)
-		{
-			A[i][j] = 0;
-			B[i][j] = 0;
 			C[i][j] = 0;
-		}			
 	}	
 	
 	for(i = 0; i < grau; i++)
-	{
+	{//Inicializando A e B com valores entre {0,1}
 		for(j = 0; j < grau; j++)
 		{
 			A[i][j] = rand()%2;
@@ -252,7 +248,7 @@ int main(int argc, char** argv)
 	}
 	
 	for(i = 0; i < grau; i++)
-	{
+	{//Imprime A
 		for(j = 0; j < grau; j++)
 			printf("%d   ", A[i][j]);
 		printf("\n");
@@ -260,7 +256,7 @@ int main(int argc, char** argv)
 	printf("\n\n\n");
 	
 	for(i = 0; i < grau; i++)
-	{
+	{//Imprime B
 		for(j = 0; j < grau; j++)
 			printf("%d   ",B[i][j]);
 		printf("\n");
