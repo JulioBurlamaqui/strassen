@@ -39,7 +39,7 @@ int **subtrai(int **A, int **B, int grau)
 }
 
 void multiplica(int **A, int **B, int **C, int grau)
-{//Multiplica pelo método normal duas matrizes e modifica a resultado. Não retorna nada.
+{//Multiplica pelo método tradicional duas matrizes e modifica a resultado. Não retorna nada.
 	int i, j, k;
 	
 	for(i = 0; i < grau; i++)
@@ -57,10 +57,10 @@ void multiplica(int **A, int **B, int **C, int grau)
 
 void strassen(int **A, int **B, int **C, int grau)
 {
-    int i, j, k;
+    int i, j;
     
 	if(grau <= 2) 
-	{//Se for menor ou igual a dois faça normalmente
+	{//Strassen híbrido
 		multiplica(A, B, C, grau);
 
         return;
@@ -265,11 +265,11 @@ int main(int argc, char** argv)
 		
 		multiplica(A, B, C, grau);
 
-		printf("\n\nMétodo tradicional:\n");
+		printf("Tradicional:\n");
 		for(i = 0; i < grau; i++)
 		{//Imprime a matriz resultado
 			for(j = 0; j < grau; j++)
-				printf("%d   ", C[i][j]);
+				printf("%d ", C[i][j]);
 			printf("\n");
 		}
 
@@ -281,12 +281,12 @@ int main(int argc, char** argv)
 
 		strassen(A, B, C, grau);
 		
-		printf("\n\nMétodo de Strassen:\n");
+		printf("Strassen:\n");
 		for(i = 0; i < grau; i++)
 		{//Imprime a matriz resultado
 			for(j = 0; j < grau; j++)
-				printf("%d   ", C[i][j]);
-			printf("\n");
+				printf("%d ", C[i][j]);
+			printf("\n");	
 		}
 
 		for(i = 0; i < grau; i++)
@@ -306,8 +306,8 @@ int main(int argc, char** argv)
 	{//Foi passado o argumento -n				
 		int **A, **B, **C;  //Cria apontadores para matrizes
 		int grau = atoi(argv[2]);  //Grau já passado no terminal
-		double tempoTradicional = 0.0;
-		double tempoStrassen = 0.0;
+		double tempoTradicional = 0.0;  //Variável que armazena o tempo de execução do algoritmo tradicional
+		double tempoStrassen = 0.0;  //Variável que armazena o tempo de execução do algoritmo de Strassen
 		int i, j;  // Variáveis auxiliares
 
 		A = malloc(sizeof(int)*grau);
@@ -338,7 +338,7 @@ int main(int argc, char** argv)
 
 		tempoTradicional += (double)(end - begin) / CLOCKS_PER_SEC;
 
-		printf("O tempo do cálculo pelo método tradicional foi de %f segundos", tempoTradicional);
+		printf("O tempo do cálculo pelo método tradicional foi de %f segundos\n\n", tempoTradicional);
 
 		for(i = 0; i < grau; i++)
 		{//Resetando o valor de C para zero
@@ -346,9 +346,9 @@ int main(int argc, char** argv)
 				C[i][j] = 0;
 		}	
 
-		clock_t begin = clock();
+		begin = clock();
 		strassen(A, B, C, grau);
-		clock_t end = clock();
+		end = clock();
 
 		tempoStrassen += (double)(end - begin) / CLOCKS_PER_SEC;
 
@@ -368,18 +368,3 @@ int main(int argc, char** argv)
 		return 0;
 	}
 }
-
-
-
-double time_spent = 0.0;
- 
-    clock_t begin = clock();
- 
-    //faz algumas coisas aqui
-    sleep(3);
- 
-    clock_t end = clock();
- 
-    // calcula o tempo decorrido encontrando a diferença (end - begin) e
-    // dividindo a diferença por CLOCKS_PER_SEC para converter em segundos
-    time_spent += (double)(end - begin) / CLOCKS_PER_SEC;
