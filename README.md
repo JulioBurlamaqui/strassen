@@ -1,5 +1,6 @@
 # strassen
-Hybrid Strassen matrix multiplication algorithm,
+Hybrid Strassen matrix multiplication algorithm
+
 Work for my Data Structure class in College.
 
 Command task goes as follows:
