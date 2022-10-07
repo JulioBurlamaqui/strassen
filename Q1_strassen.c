@@ -72,74 +72,74 @@ void strassen(int **A, int **B, int **C, int grau)
     int **M1, **M2, **M3, **M4, **M5, **M6, **M7;
     
     {//Aloca dinamicamente
-		A11 = malloc(sizeof(int)*grau/2);
-	    A12 = malloc(sizeof(int)*grau/2);
-	    A21 = malloc(sizeof(int)*grau/2);
-	    A22 = malloc(sizeof(int)*grau/2);
-	    B11 = malloc(sizeof(int)*grau/2);
-	    B21 = malloc(sizeof(int)*grau/2);
-	    B12 = malloc(sizeof(int)*grau/2);
-	    B22 = malloc(sizeof(int)*grau/2);
-	    C11 = malloc(sizeof(int)*grau/2);
-        C12 = malloc(sizeof(int)*grau/2);
-	    C21 = malloc(sizeof(int)*grau/2);
-		C22 = malloc(sizeof(int)*grau/2);
-	    M1 = malloc(sizeof(int)*grau/2);
-	    M2 = malloc(sizeof(int)*grau/2);
-	    M3 = malloc(sizeof(int)*grau/2);
-	    M4 = malloc(sizeof(int)*grau/2);
-	    M5 = malloc(sizeof(int)*grau/2);
-	    M6 = malloc(sizeof(int)*grau/2);
-	    M7 = malloc(sizeof(int)*grau/2);
+	    A11 = malloc(sizeof(int*)*grau/2);
+	    A12 = malloc(sizeof(int*)*grau/2);
+	    A21 = malloc(sizeof(int*)*grau/2);
+	    A22 = malloc(sizeof(int*)*grau/2);
+	    B11 = malloc(sizeof(int*)*grau/2);
+	    B21 = malloc(sizeof(int*)*grau/2);
+	    B12 = malloc(sizeof(int*)*grau/2);
+	    B22 = malloc(sizeof(int*)*grau/2);
+	    C11 = malloc(sizeof(int*)*grau/2);
+		C12 = malloc(sizeof(int*)*grau/2);
+	    C21 = malloc(sizeof(int*)*grau/2);
+	    C22 = malloc(sizeof(int*)*grau/2);
+	    M1 = malloc(sizeof(int*)*grau/2);
+	    M2 = malloc(sizeof(int*)*grau/2);
+	    M3 = malloc(sizeof(int*)*grau/2);
+	    M4 = malloc(sizeof(int*)*grau/2);
+	    M5 = malloc(sizeof(int*)*grau/2);
+	    M6 = malloc(sizeof(int*)*grau/2);
+	    M7 = malloc(sizeof(int*)*grau/2);
 	
-	    for(i = 0; i < grau/2; i++)
+		for(i = 0; i < grau/2; i++)
 		{
 			A11[i] = malloc(sizeof(int)*grau/2);
-		    A12[i] = malloc(sizeof(int)*grau/2);
-		    A21[i] = malloc(sizeof(int)*grau/2);
-		    A22[i] = malloc(sizeof(int)*grau/2);
-		    B11[i] = malloc(sizeof(int)*grau/2);
-		    B21[i] = malloc(sizeof(int)*grau/2);
-		    B12[i] = malloc(sizeof(int)*grau/2);
-		    B22[i] = malloc(sizeof(int)*grau/2);
-		    C11[i] = malloc(sizeof(int)*grau/2);
-	        C12[i] = malloc(sizeof(int)*grau/2);
-		    C21[i] = malloc(sizeof(int)*grau/2);
+			A12[i] = malloc(sizeof(int)*grau/2);
+			A21[i] = malloc(sizeof(int)*grau/2);
+			A22[i] = malloc(sizeof(int)*grau/2);
+			B11[i] = malloc(sizeof(int)*grau/2);
+			B21[i] = malloc(sizeof(int)*grau/2);
+			B12[i] = malloc(sizeof(int)*grau/2);
+			B22[i] = malloc(sizeof(int)*grau/2);
+			C11[i] = malloc(sizeof(int)*grau/2);
+			C12[i] = malloc(sizeof(int)*grau/2);
+			C21[i] = malloc(sizeof(int)*grau/2);
 			C22[i] = malloc(sizeof(int)*grau/2);
-		    M1[i] = malloc(sizeof(int)*grau/2);
-		    M2[i] = malloc(sizeof(int)*grau/2);
-		    M3[i] = malloc(sizeof(int)*grau/2);
-		    M4[i] = malloc(sizeof(int)*grau/2);
-		    M5[i] = malloc(sizeof(int)*grau/2);
-		    M6[i] = malloc(sizeof(int)*grau/2);
-		    M7[i] = malloc(sizeof(int)*grau/2);	
+			M1[i] = malloc(sizeof(int)*grau/2);
+			M2[i] = malloc(sizeof(int)*grau/2);
+			M3[i] = malloc(sizeof(int)*grau/2);
+			M4[i] = malloc(sizeof(int)*grau/2);
+			M5[i] = malloc(sizeof(int)*grau/2);
+			M6[i] = malloc(sizeof(int)*grau/2);
+			M7[i] = malloc(sizeof(int)*grau/2);	
 		}
 		
 		for(i = 0; i < grau/2; i++)
-  		{
-	        for(j = 0; j < grau/2; j++)
-	        {
-	            A11[i][j] = 0;
-	            A12[i][j] = 0;
-	            A21[i][j] = 0;
-	            A22[i][j] = 0;
-	            B11[i][j] = 0;
-	            B12[i][j] = 0;
-	            B21[i][j] = 0;
-	            B22[i][j] = 0;
-	            C11[i][j] = 0;
-	            C12[i][j] = 0;
-	            C21[i][j] = 0;
-	            C22[i][j] = 0;
-	            M1[i][j] = 0;
-	            M2[i][j] = 0;
-	            M3[i][j] = 0;
-	            M4[i][j] = 0;
-				M5[i][j] = 0;
-	            M6[i][j] = 0;
-	            M7[i][j] = 0;
-	        }         
-    	}
+		{
+			for(j = 0; j < grau/2; j++)
+			{
+			    A11[i][j] = 0;
+			    A12[i][j] = 0;
+			    A21[i][j] = 0;
+			    A22[i][j] = 0;
+			    B11[i][j] = 0;
+			    B12[i][j] = 0;
+			    B21[i][j] = 0;
+			    B22[i][j] = 0;
+			    C11[i][j] = 0;
+			    C12[i][j] = 0;
+			    C21[i][j] = 0;
+			    C22[i][j] = 0;
+			    M1[i][j] = 0;
+			    M2[i][j] = 0;
+			    M3[i][j] = 0;
+			    M4[i][j] = 0;
+			    M5[i][j] = 0;
+			    M6[i][j] = 0;
+			    M7[i][j] = 0;
+			}         
+		}
 	}
 	
 	for(i = 0; i < grau/2; i++)
@@ -232,9 +232,9 @@ int main(int argc, char** argv)
 		printf("Entre com o grau das matrizes.\n");
 		scanf("%d", &grau);
 
-		A = malloc(sizeof(int)*grau);
-		B = malloc(sizeof(int)*grau);
-		C = malloc(sizeof(int)*grau);
+		A = malloc(sizeof(int*)*grau);
+		B = malloc(sizeof(int*)*grau);
+		C = malloc(sizeof(int*)*grau);
 
 		for(i = 0; i < grau; i++)
 		{
@@ -310,9 +310,9 @@ int main(int argc, char** argv)
 		double tempoStrassen = 0.0;  //Variável que armazena o tempo de execução do algoritmo de Strassen
 		int i, j;  // Variáveis auxiliares
 
-		A = malloc(sizeof(int)*grau);
-		B = malloc(sizeof(int)*grau);
-		C = malloc(sizeof(int)*grau);
+		A = malloc(sizeof(int*)*grau);
+		B = malloc(sizeof(int*)*grau);
+		C = malloc(sizeof(int*)*grau);
 
 		for(i = 0; i < grau; i++)
 		{
